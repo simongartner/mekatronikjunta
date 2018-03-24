@@ -1,0 +1,3 @@
+[submodule "Mars/libraries/FastLED"]
+	path = Mars/libraries/FastLED
+	url = https://github.com/FastLED/FastLED.git
