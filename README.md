@@ -21,3 +21,9 @@ Nu ligger filen uppe udner mekatronikjunta!
 git commit -a -m "Skriv något så vi fattar vad som hänt"
 git push
 
+## Köra LedTowers
+För att kunna köra LedTowers måste du checka ut submoduler
+git submodule update --init 
+
+ Öppna nu Arduion IDE. Under Preferences -> Sketchbook location skriver du
+ <path-to-git-repo-on-local-machine>\mekatronikjunta\Mars
