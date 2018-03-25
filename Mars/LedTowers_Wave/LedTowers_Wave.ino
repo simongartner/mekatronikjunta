@@ -30,7 +30,7 @@ void setup() {
   delay(2000);
   // Uncomment one of the following lines for your leds arrangement.
   FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
-
+  Serial.begin(115200);
   for(int CurrentLED =0; CurrentLED < NUM_LEDS; CurrentLED++){
         State[CurrentLED].RED = 0;
         State[CurrentLED].GREEN =0;
@@ -39,13 +39,33 @@ void setup() {
 }
 void Wave_Propegate(void){
   // Move a single led 
+  //Serial.println("===============================");
+  //Serial.println("Wave_Propegate");
+  static LEDColors temp;  
   for(int CurrentLED = 1; CurrentLED < NUM_LEDS; CurrentLED++) {
       // Turn our current led on.
-      leds[CurrentLED] = CRGB (State[CurrentLED].GREEN, State[CurrentLED].RED, State[CurrentLED].BLUE);
+      //Serial.println("CurrentLED");
+      //Serial.println(CurrentLED);
+      temp.RED=State[CurrentLED].RED;
+      temp.GREEN=State[CurrentLED].GREEN;
+      temp.BLUE=State[CurrentLED].BLUE;
+      
       // Save Previouse LED to Current LED.
       State[CurrentLED].RED = State[CurrentLED-1].RED;
       State[CurrentLED].GREEN = State[CurrentLED-1].GREEN;
       State[CurrentLED].BLUE = State[CurrentLED-1].BLUE;
+
+      State[CurrentLED-1].RED = temp.RED;
+      State[CurrentLED-1].GREEN = temp.GREEN;
+      State[CurrentLED-1].BLUE = temp.BLUE;
+      
+      //Serial.println("State[CurrentLED].RED");
+      //Serial.println(State[CurrentLED].RED);
+
+      //Serial.println("State[CurrentLED-1].RED");
+      //Serial.println(State[CurrentLED-1].RED);
+      
+      leds[CurrentLED] = CRGB (State[CurrentLED-1].RED, State[CurrentLED-1].GREEN, State[CurrentLED-1].BLUE);
    }
    FastLED.show();
 }
@@ -62,17 +82,23 @@ void Wave_Start(int RED, int GREEN, int BLUE){
     
 void loop() {
     static int Alternate = 0;
+    //Serial.println("===================");
+    //Serial.println("Alternate");
+    //Serial.println(Alternate);
     
-    if(Alternate == 2){
+    if(Alternate == 0 || Alternate == 1 || Alternate == 2){
       Wave_Start(255,0,0);  
-    }else if(Alternate == 5){
-      Wave_Start(0,255,0); 
-    }else if(Alternate == 10){ 
+    }else if(Alternate == 12 || Alternate == 13 || Alternate == 14){
+      Wave_Start(0,255,0);
+    }else if(Alternate == 23 || Alternate == 24 || Alternate == 25){
+      Wave_Start(0,0,255); 
+    }else if(Alternate >= 26){ 
      Alternate = 0;
     }else{
     Wave_Start(0,0,0);
-    Alternate++;
     }
+    
+    Alternate++;
     
     Wave_Propegate();
     delay(50);
