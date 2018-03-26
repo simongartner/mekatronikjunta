@@ -35,4 +35,4 @@ git submodule update --init
 ```
 
  Öppna nu Arduion IDE. Under Preferences -> Sketchbook location skriver du
- *<path-to-git-repo-on-local-machine>*\mekatronikjunta\Mars
+ \<path-to-git-repo-on-local-machine\>\mekatronikjunta\Mars
