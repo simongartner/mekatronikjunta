@@ -23,8 +23,10 @@ git push
 Nu ligger filen uppe udner mekatronikjunta!
 
 ## Pusha ändringar ifrån dina lokala filer till master
+```
 git commit -a -m "Skriv något så vi fattar vad som hänt"
 git push
+```
 
 ## Köra LedTowers
 För att kunna köra LedTowers måste du checka ut submoduler
