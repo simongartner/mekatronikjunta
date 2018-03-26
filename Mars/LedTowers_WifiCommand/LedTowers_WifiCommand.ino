@@ -13,8 +13,7 @@ void setup() {
 }
 
 void loop() {
-  static int Alternate = 0;
-    
+    static int Alternate = 0;
     if(Alternate == 0 || Alternate == 1 || Alternate == 2){
       LedTowers_WaveStart(255,0,0);  
     }else if(Alternate == 12 || Alternate == 13 || Alternate == 14){
