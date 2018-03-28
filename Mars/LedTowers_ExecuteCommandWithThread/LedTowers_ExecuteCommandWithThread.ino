@@ -21,12 +21,15 @@ void setup() {
         State[CurrentLED].GREEN =0;
         State[CurrentLED].BLUE = 0;           
     }
-  Serial.println("Enter a color!");
   myThread.enabled = true; // Default enabled value is true
   myThread.setInterval(50); // Setts the wanted interval to be 50ms
   // This will set the callback of the Thread: "What should I run"?
   myThread.onRun(TranslateAndExecuteCommand); // callback_function is the name of the function
 
+  
+  // Reset LED Strip
+  LedTowers_FullColor(0,0,0);
+  Serial.println("Enter a color!");
 }
 
 void recvWithEndMarker() {
@@ -50,26 +53,31 @@ void recvWithEndMarker() {
         }
     }
 }
+
 void TranslateAndExecuteCommand(void){
   if(newData){
       String receivedString = String(receivedChars);
       if(receivedString.equals("RED")){
-        LED.RED = 255;
-        LED.GREEN = LED.BLUE = 0;
+          LED.RED = 255;
+          LED.GREEN = LED.BLUE = 0;
       }else if (receivedString.equals("GREEN")){
-        LED.GREEN = 255;
-        LED.RED = LED.BLUE = 0;
+          LED.GREEN = 255;
+          LED.RED = LED.BLUE = 0;
       }else if (receivedString.equals("BLUE")){
-        LED.BLUE = 255;
-        LED.GREEN = LED.RED = 0;
+          LED.BLUE = 255;
+          LED.GREEN = LED.RED = 0;
       }else{
-        Serial.print("Invalid choice! Try again!");
-        }
-      newData=false; 
+          Serial.println("Invalid choice! Try again!");
+      } 
       LedTowers_FullColor(LED.RED,LED.GREEN,LED.BLUE); 
+      newData=false;
+    }
 }
+
 void loop() {
-  int CurrMillis= millis();
   recvWithEndMarker();
-  }
+  if(myThread.shouldRun()){
+  // Yes, the Thread should be runned, let's run it
+      myThread.run();
+    }
 }
