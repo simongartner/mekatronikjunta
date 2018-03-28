@@ -21,7 +21,7 @@ void LedTowers_Pulsatile(LedColors LED, double frequency){
     static float Amplitud = 0.0;
     static int Increase = true;
     
-    LedTowers_WaveStart(round(LED.RED*Amplitud),round(LED.GREEN*Amplitud), round(LED.BLUE*Amplitud), FULL);
+    LedTowers_WaveStart(LED.RED*Amplitud,LED.GREEN*Amplitud, LED.BLUE*Amplitud, FULL);
     
     if(Amplitud <= 0.0){
     Increase = true;  
