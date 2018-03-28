@@ -1,6 +1,0 @@
-[submodule "Mars/libraries/FastLED"]
-	path = Mars/libraries/FastLED
-	url = https://github.com/FastLED/FastLED.git
-[submodule "Mars/libraries/ArduinoThread"]
-	path = Mars/libraries/ArduinoThread
-	url = https://github.com/ivanseidel/ArduinoThread.git
