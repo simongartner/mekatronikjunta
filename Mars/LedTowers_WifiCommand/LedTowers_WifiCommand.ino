@@ -1,4 +1,12 @@
 #include "LedTowers_Animations.h"
+
+LedColors LED;
+int PrevMillis = 0;
+int Interval = 20;
+boolean newData = false;
+const byte numChars = 20;
+char receivedChars[numChars];
+
 void setup() {
   // sanity check delay - allows reprogramming if accidently blowing power w/leds
   delay(2000);
@@ -10,21 +18,52 @@ void setup() {
         State[CurrentLED].GREEN =0;
         State[CurrentLED].BLUE = 0;           
     }
+  Serial.println("Enter a color!");
+}
+
+void recvWithEndMarker() {
+    static byte ndx = 0;
+    char endMarker = '\n';
+    char rc;
+    while (Serial.available() > 0 && newData == false) {
+        rc = Serial.read();
+
+        if (rc != endMarker) {
+            receivedChars[ndx] = rc;
+            ndx++;
+            if (ndx >= numChars) {
+                ndx = numChars - 1;
+            }
+        }
+        else {
+            receivedChars[ndx] = '\0'; // terminate the string
+            ndx = 0;
+            newData = true;
+        }
+    }
 }
 
 void loop() {
-    static int Alternate = 0;
-    if(Alternate == 0 || Alternate == 1 || Alternate == 2){
-      LedTowers_WaveStart(255,0,0);  
-    }else if(Alternate == 12 || Alternate == 13 || Alternate == 14){
-      LedTowers_WaveStart(0,255,0);
-    }else if(Alternate == 23 || Alternate == 24 || Alternate == 25){
-      LedTowers_WaveStart(0,0,255); 
-    }else if(Alternate >= 26){ 
-     Alternate = 0;
-    }else{
-    LedTowers_WaveStart(0,0,0);
+  int CurrMillis= millis();
+  recvWithEndMarker();
+  if(CurrMillis - PrevMillis >= Interval){
+    PrevMillis = CurrMillis;
+    if(newData){
+      String receivedString = String(receivedChars);
+      if(receivedString.equals("RED")){
+        LED.RED = 255;
+        LED.GREEN = LED.BLUE = 0;
+      }else if (receivedString.equals("GREEN")){
+        LED.GREEN = 255;
+        LED.RED = LED.BLUE = 0;
+      }else if (receivedString.equals("BLUE")){
+        LED.BLUE = 255;
+        LED.GREEN = LED.RED = 0;
+      }else{
+        Serial.print("Invalid choice! Try again!");
+        }
+      newData=false; 
     }
-    Alternate++;
-    delay(50);
+    LedTowers_FullColor(LED.RED,LED.GREEN,LED.BLUE);
+  }
 }
