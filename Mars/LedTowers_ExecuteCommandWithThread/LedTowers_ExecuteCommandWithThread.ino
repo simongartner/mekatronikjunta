@@ -22,11 +22,10 @@ void setup() {
         State[CurrentLED].BLUE = 0;           
     }
   myThread.enabled = true; // Default enabled value is true
-  myThread.setInterval(50); // Setts the wanted interval to be 50ms
+  myThread.setInterval(100); // Setts the wanted interval to be 50ms
   // This will set the callback of the Thread: "What should I run"?
   myThread.onRun(TranslateAndExecuteCommand); // callback_function is the name of the function
 
-  
   // Reset LED Strip
   LedTowers_FullColor(0,0,0);
   Serial.println("Enter a color!");
@@ -69,7 +68,7 @@ void TranslateAndExecuteCommand(void){
       }else{
           Serial.println("Invalid choice! Try again!");
       } 
-      LedTowers_FullColor(LED.RED,LED.GREEN,LED.BLUE); 
+      LedTowers_ShiftFullColor(LED.RED,LED.GREEN,LED.BLUE); 
       newData=false;
     }
 }
